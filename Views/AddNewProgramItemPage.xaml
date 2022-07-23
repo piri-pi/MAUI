@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:ORCA.ViewModels"
+             x:Class="ORCA.Views.AddNewProgramItemPage"
+             x:DataType="vm:AddNewProgramItemPageViewModel"
+             Shell.PresentationMode="ModalAnimated"
+             Title="AddNewProgramItemPage">
+
+   <ContentPage.Content>
+        <Grid>
+            <Frame BorderColor="{StaticResource Primary}" 
+                   HorizontalOptions="Center" VerticalOptions="Start"
+                   HeightRequest="280" WidthRequest="500">
+                <StackLayout>
+                    <Label Text="Name" FontSize="Large"/>
+                    <Entry Text="{Binding ProgramItem.Name, UpdateSourceEventName=TextChanged}" FontSize="Large"
+                           BackgroundColor="{StaticResource EntryBackground}"
+                           IsSpellCheckEnabled="False" IsTextPredictionEnabled="False"
+                           ClearButtonVisibility="WhileEditing" Keyboard="Text"/>
+                    <Label Text="Description" FontSize="Medium"/>
+                    <Entry Text="{Binding ProgramItem.Description}" FontSize="Medium"
+                           BackgroundColor="{StaticResource EntryBackground}"
+                           IsSpellCheckEnabled="False" IsTextPredictionEnabled="False"
+                           ClearButtonVisibility="WhileEditing" Keyboard="Text"/>
+                    <Grid ColumnDefinitions="*,*" Margin="0,20,0,0">
+                        <Button Grid.Column="0" Text="Add" Command="{Binding AddCommand}" FontSize="Medium"/>
+                        <Button Grid.Column="1" Text="Cancel" Command="{Binding CancelCommand}" FontSize="Medium"/>
+                    </Grid>
+                </StackLayout>
+            </Frame>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

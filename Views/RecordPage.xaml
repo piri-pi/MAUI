@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:ORCA.Models"
+             xmlns:svc="clr-namespace:ORCA.Services"
+             xmlns:vm="clr-namespace:ORCA.ViewModels"
+             x:Class="ORCA.Views.RecordPage"
+             x:DataType="vm:RecordPageViewModel"
+             Title="RecordPage">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Delete" Command="{Binding DeleteAllProgramItemsCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Resources>
+        <svc:CompetencyNameToColorConverter x:Key="CompToCol"/>
+    </ContentPage.Resources>
+
+    <Grid x:Name="pageGrid"
+          ColumnDefinitions="2*,*,2*" 
+          RowDefinitions="Auto,*,Auto">
+
+        <Label Grid.Column="1" Text="Program" FontSize="Header" HorizontalOptions="Center" VerticalOptions="Center"/>
+        <Label Grid.Column="0" Text="CM1" FontSize="Header" HorizontalOptions="Center" VerticalOptions="Center"/>
+        <Label Grid.Column="2" Text="CM2" FontSize="Header" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+        <CollectionView Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3"
+                        Margin="3"
+                        ItemsSource="{Binding Program}"
+                        SelectionMode="None"
+                        CanReorderItems="True">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout ItemSpacing="3"
+                                   Orientation="Vertical"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:ProgramItem">
+                    <Grid ColumnDefinitions="2*,*,2*"
+                          ColumnSpacing="3">
+                        <Frame Grid.Column="1"
+                               Padding="3">
+                            <VerticalStackLayout VerticalOptions="CenterAndExpand">
+                                <Label Text="{Binding Name}"
+                                       HorizontalOptions="Center"
+                                       FontSize="18"/>
+                                <Label Text="{Binding Description}"
+                                       HorizontalOptions="Center"
+                                       FontSize="13"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                        <Frame Grid.Column="0"
+                               Padding="3">
+                            <VerticalStackLayout>
+                                <CollectionView ItemsSource="{Binding CommentsForCM1}"
+                                                SelectionMode="None">
+                                    <CollectionView.ItemsLayout>
+                                        <LinearItemsLayout ItemSpacing="3"
+                                                           Orientation="Vertical"/>
+                                    </CollectionView.ItemsLayout>
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="model:CommentItem">
+                                            <Grid ColumnDefinitions="Auto,*,Auto"
+                                                  ColumnSpacing="3">
+                                                <Button Grid.Column="0"
+                                                        Text="Classify"/>
+                                                <Editor Grid.Column="1"
+                                                        HorizontalOptions="Fill"
+                                                        AutoSize="TextChanges"
+                                                        Text="{Binding Comment}"/>
+                                                <Button Grid.Column="2"
+                                                        Text="X"
+                                                        BackgroundColor="Red"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                                <Button Text="+"
+                                        HorizontalOptions="End"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:RecordPageViewModel}},
+                                                          Path=AddCommentForCM1Command}"
+                                        CommandParameter="{Binding .}"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <StackLayout Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+            <Button Text="+" FontSize="Large" Command="{Binding AddProgramItemCommand}"/>
+            <Label Text="Add Program Item" FontSize="Medium" VerticalOptions="CenterAndExpand"/>
+        </StackLayout>
+    </Grid>
+</ContentPage>
